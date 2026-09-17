@@ -2,6 +2,7 @@ import ctypes
 import json
 import queue
 import re
+import sys
 import threading
 import time
 import tkinter as tk
@@ -18,10 +19,16 @@ import win32com.client
 # AYARLAR
 # ================================================================
 
-try:
-    BASE_DIR = Path(__file__).resolve().parent
-except NameError:
-    BASE_DIR = Path.cwd()
+# Onefile: modeller EXE'nin yanında; kütüphaneler PyInstaller paketindedir.
+# Çalışma dizini veya kısayolun "Başlangıç yeri" model yolunu değiştirmez.
+if getattr(sys, "frozen", False):
+    BASE_DIR = Path(sys.executable).resolve().parent
+else:
+    try:
+        BASE_DIR = Path(__file__).resolve().parent
+    except NameError:
+        # Thonny: editör içeriğini __file__ olmadan çalıştırma desteği.
+        BASE_DIR = Path.cwd()
 
 MODEL_TR_PATH = BASE_DIR / "model" / "tr"
 MODEL_EN_PATH = BASE_DIR / "model" / "en"
@@ -388,6 +395,17 @@ class SpeechApp:
 
     def load_models_and_run_audio(self):
         try:
+            missing_models = [
+                str(path) for path in (MODEL_TR_PATH, MODEL_EN_PATH)
+                if not path.is_dir()
+            ]
+            if missing_models:
+                raise FileNotFoundError(
+                    "Model klasörü bulunamadı:\n"
+                    + "\n".join(missing_models)
+                    + "\n\nmodel/tr ve model/en klasörlerini READ.exe ile "
+                    "aynı ana klasöre yerleştirin."
+                )
             model_tr = vosk.Model(str(MODEL_TR_PATH))
             model_en = vosk.Model(str(MODEL_EN_PATH))
             self.recognizers = {
