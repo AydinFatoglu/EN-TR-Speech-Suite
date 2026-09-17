@@ -28,40 +28,8 @@ Model ve bağımlılıklar indirildikten sonra okuma ve dikte için internet ba�
 
 > Bu proje Windows'a özeldir; SAPI, COM ve Windows klavye/pano API'lerini kullanır.
 
-## Proje dosyaları
 
-| Dosya / klasör | Açıklama |
-| --- | --- |
-| `READ.py` | Tkinter arayüzü ve uygulama kodu |
-| `BUILD.cmd` | PyInstaller ile tek dosya EXE oluşturur |
-| `model/tr/` | Türkçe Vosk modelinin içeriği |
-| `model/en/` | İngilizce Vosk modelinin içeriği |
-| `KURULUM.txt` | Kısa kurulum notları |
-
-Modeller dağıtılan kaynak paketine dahil değildir; ayrıca indirilmelidir.
-
-## Python ile kurulum
-
-### 1. Projeyi hazırlayın
-
-Bu depoyu indirin veya klonlayın. PowerShell'de `READ.py` dosyasının bulunduğu klasörü açın.
-
-Sanal ortam oluşturun:
-
-```powershell
-python -m venv .venv
-```
-
-Paketleri bu ortama kurun:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install vosk sounddevice pyperclip pywin32 pyinstaller
-```
-
-`tkinter`, standart Windows Python kurulumunun Tcl/Tk bileşeniyle gelir. `tkinter` bulunamıyorsa Python kurulumunda Tcl/Tk desteğini etkinleştirin.
-
-### 2. Vosk modellerini yerleştirin
+### -. Vosk modellerini yerleştirin
 
 [Vosk model listesinden](https://alphacephei.com/vosk/models) bir Türkçe ve bir İngilizce model indirin ve arşivlerini açın.
 
@@ -99,7 +67,7 @@ Bu indeksler bilgisayara göre değişebilir. Uygulamanın kullanacağı Python 
 
 `READ.py` içindeki iki indeks değerini çıktınıza göre düzenleyin. Windows ayarlarında görünen her sesin SAPI listesinde bulunacağını varsaymayın; yukarıdaki çıktıyı esas alın.
 
-### 4. Uygulamayı başlatın
+### -. Uygulamayı başlatın
 
 ```powershell
 .\.venv\Scripts\python.exe .\READ.py
