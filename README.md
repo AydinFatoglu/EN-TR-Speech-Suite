@@ -50,30 +50,6 @@ C:\Konusan\model\tr\
 C:\Konusan\model\en\
 ```
 
-### 3. SAPI seslerini kontrol edin
-
-Kod şu ses sırasını varsayar:
-
-```python
-ENGLISH_VOICE_INDEX = 0  # Microsoft David Desktop
-TURKISH_VOICE_INDEX = 3  # Microsoft Tolga
-```
-
-Bu indeksler bilgisayara göre değişebilir. Uygulamanın kullanacağı Python ortamında sesleri listeleyin:
-
-```powershell
-.\.venv\Scripts\python.exe -c "import win32com.client; voices = win32com.client.Dispatch('SAPI.SpVoice').GetVoices(); [print(i, voices.Item(i).GetDescription()) for i in range(voices.Count)]"
-```
-
-`READ.py` içindeki iki indeks değerini çıktınıza göre düzenleyin. Windows ayarlarında görünen her sesin SAPI listesinde bulunacağını varsaymayın; yukarıdaki çıktıyı esas alın.
-
-### -. Uygulamayı başlatın
-
-```powershell
-.\.venv\Scripts\python.exe .\READ.py
-```
-
-Başlangıçta iki model arka planda yüklenir. **Sesle yazma hazır** mesajı gelince dikte düğmesi etkinleşir.
 
 ## Kullanım
 
@@ -126,37 +102,7 @@ Copy-Item -LiteralPath .\model -Destination .\dist -Recurse -Force
 
 Dağıtırken **`READ.exe` ve yanındaki `model` klasörünü birlikte** taşıyın. Hedef bilgisayarda Python gerekmez; uygun SAPI sesleri ve mikrofon gerekir.
 
-### BUILD.cmd kullanımı
 
-`BUILD.cmd` aynı derleme işlemini `python` komutuyla yapar. Bu nedenle kullandığı Python ortamında tüm bağımlılıklar bulunmalıdır.
-
-Yukarıdaki sanal ortamı kullanmak için Komut İstemi'nde (CMD):
-
-```bat
-.venv\Scripts\activate.bat
-BUILD.cmd
-```
-
-Dosyayı doğrudan çift tıklamak PATH üzerindeki Python'u kullanır; sanal ortamın otomatik seçildiği varsayılmamalıdır. `BUILD.cmd` model klasörlerini kopyalamaz.
-
-### Auto-py-to-exe kullanımı
-
-- Script olarak `READ.py` seçin.
-- **One File** ve **Window Based** seçeneklerini kullanın.
-- Ek parametrelere `--collect-all vosk` ekleyin.
-- Model klasörlerini EXE içine eklemeyin; çıktıdaki EXE'nin yanında tutun.
-
-## Dosya yolları nasıl çalışır?
-
-| Çalıştırma biçimi | Model kökü |
-| --- | --- |
-| Normal Python | `READ.py` dosyasının bulunduğu klasör |
-| PyInstaller EXE | `sys.executable` ile bulunan EXE klasörü |
-| Thonny, `__file__` olmadan editör çalıştırması | Geçerli çalışma klasörü |
-
-Onefile EXE çalışırken PyInstaller'ın `_MEI...` adlı geçici bir klasöre açılması normaldir. **Vosk kütüphanesi ve DLL'leri paket içinden, modeller ise EXE'nin yanından yüklenir.** Kısayolun “Başlangıç yeri” EXE modundaki model yolunu değiştirmez.
-
-[PyInstaller çalışma zamanı ve dosya yolları](https://pyinstaller.org/en/stable/runtime-information.html)
 
 ## Sorun giderme
 
